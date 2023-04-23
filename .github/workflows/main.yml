@@ -1,0 +1,22 @@
+name: TEMPLATE
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  dockerize:
+    environment: docker-hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Build container image
+        run: docker build -t littlegiants/mongo-replica:${{github.ref_name}} .
+      - name: Docker Login
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: notholst
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Push image to GitHub repository
+        run: docker push --all-tags littlegiants/template
