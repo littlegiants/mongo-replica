@@ -19,4 +19,4 @@ jobs:
           DOCKER_USERNAME: notholst
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Push image to GitHub repository
-        run: docker push --all-tags littlegiants/template
+        run: docker push --all-tags littlegiants/mongo-replica
