@@ -12,12 +12,10 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Build container image
-        run: docker build -t littlegiants/mongo-replica:${{github.ref_name}} .
       - name: Docker Login
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: notholst
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Push image to GitHub repository
-        run: docker push --all-tags littlegiants/mongo-replica
+      - name: Build container image
+        run: docker buildx build --platform linux/amd64,linux/arm64 -t littlegiants/mongo-replica:${{github.ref_name}} --push .
